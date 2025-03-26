@@ -1,0 +1,67 @@
+<div class="container d-flex justify-content-center align-items-center py-5">
+  <div class="card shadow-lg p-4 w-100" style="max-width: 900px;">
+    <div class="card-body">
+      <h1 class="text-center mb-4"><%= t('quiz.results') %></h1>
+      
+      <div class="alert alert-info mb-4">
+        <h4 class="alert-heading"><%= t('quiz.final_score') %></h4>
+        <p class="mb-0"><%= t('quiz.correct_answers', correct: @quiz_results["total_correct"], total: @quiz_results["total_questions"], score: @quiz_results["score"]) %></p>
+      </div>
+
+      <% @quiz_results["results"].each do |question_id, result| %>
+        <div class="card mb-4">
+          <div class="card-header <%= result["is_correct"] ? 'bg-success text-white' : 'bg-danger text-white' %>">
+            <h5 class="mb-0"><%= t('questions.title') %></h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text mb-3"><strong><%= t('questions.content') %>:</strong> <%= result["question_text"] %></p>
+            <p class="card-text mb-3"><strong><%= t('questions.type') %>:</strong> <%= t("questions.types.#{result["question_type"]}") %></p>
+            
+            <div class="mb-2">
+              <strong><%= t('quiz.your_answer') %>:</strong>
+              <span class="<%= result["is_correct"] ? 'text-success' : 'text-danger' %>">
+                <% if result["question_type"] == "order_sentences" %>
+                  <% if result["given_answer"] == t('quiz.not_answered') %>
+                    <%= result["given_answer"] %>
+                  <% else %>
+                    <ol class="mt-2">
+                      <% result["given_answer"].split("|").each do |sentence| %>
+                        <li class="mb-1"><%= sentence %></li>
+                      <% end %>
+                    </ol>
+                  <% end %>
+                <% else %>
+                  <%= result["given_answer"] == "Não respondida" ? t('quiz.not_answered') : result["given_answer"] %>
+                <% end %>
+              </span>
+            </div>
+            
+            <% unless result["is_correct"] %>
+              <div class="mt-2">
+                <strong><%= t('quiz.correct_answer') %>:</strong>
+                <% if result["question_type"] == "order_sentences" %>
+                  <ol class="mt-2 text-success">
+                    <% result["correct_answer"].split("|").each do |sentence| %>
+                      <li class="mb-1"><%= sentence %></li>
+                    <% end %>
+                  </ol>
+                <% else %>
+                  <span class="text-success"><%= result["correct_answer"] %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="d-grid gap-2">
+        <%= link_to t('quiz.try_again'), resolve_quiz_activity_path(@activity), class: "btn btn-primary" %>
+        <% if current_user.teacher? %>
+          <%= link_to t('activities.back_to_dashboard'), teacher_dashboard_path, class: "btn btn-secondary" %>
+        <% else %>
+          <%= link_to t('activities.back_to_activities'), activities_path, class: "btn btn-secondary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

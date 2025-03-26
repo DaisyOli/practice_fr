@@ -1,0 +1,249 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow-lg p-4 w-100" style="max-width: 900px;">
+    <div class="card-body">
+      <h1 class="text-center mb-4"><%= t('quiz.title') %> <%= @activity.title %></h1>
+      
+      <div class="mb-4">
+        <p><strong><%= t('activities.description') %>:</strong> <%= @activity.description %></p>
+        <p><strong><%= t('activities.level') %>:</strong> <span class="badge bg-info"><%= @activity.level %></span></p>
+        
+        <% if @activity.statement.present? %>
+          <div class="card bg-light mb-3">
+            <div class="card-body">
+              <%= simple_format(@activity.statement) %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Exibição da mídia -->
+      <% if @activity.media_url.present? %>
+        <div class="mb-4">
+          <% if @activity.media_url.include?('youtube.com') || @activity.media_url.include?('youtu.be') %>
+            <% youtube_id = @activity.media_url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/) %>
+            <% if youtube_id && youtube_id[1] %>
+              <div style="max-width: 560px; margin: 0 auto;">
+                <div class="ratio ratio-16x9 mb-3">
+                  <iframe 
+                    src="https://www.youtube.com/embed/<%= youtube_id[1] %>" 
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                  </iframe>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <img src="<%= @activity.media_url %>" alt="Imagem da atividade" class="img-fluid mb-3">
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Exibição do texto explicativo -->
+      <% if @activity.explanation_text.present? %>
+        <div class="mb-4">
+          <div class="card">
+            <div class="card-body">
+              <%= simple_format(@activity.explanation_text) %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      
+      <%= form_with(url: submit_quiz_activity_path(@activity), method: :post, data: { turbo: false }) do |f| %>
+        <% @questions.each_with_index do |question, index| %>
+          <div class="card mb-3">
+            <div class="card-body py-3">
+              <h6 class="card-subtitle text-muted mb-2"><%= t('questions.title') %> <%= index + 1 %></h6>
+              <p class="card-text mb-3 fs-5">
+                <% if question.fill_in_blank? %>
+                  <%= question.content.gsub('_____', text_field_tag("answers[#{question.id}]", nil, class: 'form-control d-inline-block', style: 'width: 150px;')).html_safe %>
+                <% else %>
+                  <%= question.content %>
+                <% end %>
+              </p>
+
+              <% if question.multiple_choice? && question.options.any? %>
+                <div class="options-list">
+                  <div class="ps-2">
+                    <% question.options.each do |option| %>
+                      <div class="form-check mb-2">
+                        <%= radio_button_tag "answers[#{question.id}]", option, false, class: 'form-check-input' %>
+                        <%= label_tag "answers_#{question.id}_#{option.parameterize}", option, class: 'form-check-label' %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% elsif question.order_sentences? && question.options.any? %>
+                <div class="order-sentences-container">
+                  <p class="mb-3 text-muted"><i class="fas fa-info-circle me-2"></i><%= t('questions.order_sentences_instruction', default: 'Arraste as frases para colocá-las na ordem correta:') %></p>
+                  
+                  <%= hidden_field_tag "answers[#{question.id}]", '', class: 'order-sentences-answer', id: "order_sentences_answer_#{question.id}" %>
+                  
+                  <ul class="list-group sortable-list" id="sortable_<%= question.id %>" data-question-id="<%= question.id %>">
+                    <% question.options.each_with_index do |sentence, i| %>
+                      <li class="list-group-item sortable-item border-0 shadow-sm mb-2" data-value="<%= sentence %>">
+                        <div class="d-flex align-items-center">
+                          <div class="drag-handle me-3 px-2">
+                            <i class="fas fa-grip-vertical text-primary"></i>
+                          </div>
+                          <div class="flex-grow-1"><%= sentence %></div>
+                          <div class="ms-2 text-muted">
+                            <i class="fas fa-arrows-alt-v"></i>
+                          </div>
+                        </div>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="d-grid gap-2">
+          <%= f.submit t('quiz.submit'), class: "btn btn-primary btn-lg mb-3", data: { disable_with: t('quiz.submitting') } %>
+          <%= link_to t('activities.back_to_activities'), activities_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Adicionando o Sortable.js para drag and drop -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+  // Função para inicializar o Sortable
+  function initSortable() {
+    console.log('Inicializando Sortable para as listas de ordenação');
+    
+    // Função para atualizar o campo de resposta com a ordem atual dos itens
+    function updateAnswerField(sortableList) {
+      if (!sortableList) return;
+      
+      const questionId = sortableList.dataset.questionId;
+      if (!questionId) {
+        console.error('ID da questão não encontrado no elemento sortable');
+        return;
+      }
+      
+      const answerField = document.getElementById(`order_sentences_answer_${questionId}`);
+      if (!answerField) {
+        console.error(`Campo de resposta não encontrado para a questão ${questionId}`);
+        return;
+      }
+      
+      const items = sortableList.querySelectorAll('.sortable-item');
+      const values = Array.from(items).map(item => item.dataset.value || '');
+      answerField.value = values.join('|');
+      console.log(`Valor atualizado para questão ${questionId}:`, answerField.value);
+    }
+
+    // Destroi instâncias existentes do Sortable para evitar duplicações
+    document.querySelectorAll('.sortable-list').forEach(function(element) {
+      if (element.sortableInstance) {
+        element.sortableInstance.destroy();
+      }
+    });
+
+    // Inicialização do Sortable para todos os containers de ordenação
+    document.querySelectorAll('.sortable-list').forEach(function(element) {
+      try {
+        console.log('Inicializando Sortable para elemento:', element.id);
+        const sortable = new Sortable(element, {
+          animation: 150,
+          handle: '.drag-handle',
+          ghostClass: 'sortable-ghost',
+          chosenClass: 'sortable-chosen',
+          dragClass: 'sortable-drag',
+          onEnd: function(evt) {
+            updateAnswerField(evt.to);
+          }
+        });
+        
+        // Armazena a instância do Sortable no elemento para possível limpeza futura
+        element.sortableInstance = sortable;
+        
+        // Inicializa o campo de resposta com a ordem inicial
+        updateAnswerField(element);
+      } catch (error) {
+        console.error('Erro ao inicializar Sortable:', error);
+      }
+    });
+  }
+  
+  // Registra o inicializador para vários eventos para garantir que funcione
+  // com ou sem Turbo, e também após recarregar a página
+  document.addEventListener('DOMContentLoaded', initSortable);
+  document.addEventListener('turbo:load', initSortable);
+  document.addEventListener('turbo:render', initSortable);
+  document.addEventListener('turbo:frame-load', initSortable);
+  
+  // Inicializa imediatamente se o DOM já estiver carregado
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initSortable, 100);
+  }
+</script>
+
+<style>
+  .sortable-ghost {
+    opacity: 0.6;
+    background-color: #e9ecef !important;
+    border: 2px dashed #6c757d !important;
+  }
+  
+  .sortable-chosen {
+    background-color: #fff !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    transform: scale(1.02);
+    z-index: 1000;
+  }
+  
+  .sortable-drag {
+    cursor: grabbing !important;
+    background-color: #fff !important;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+  }
+  
+  .sortable-item {
+    transition: all 0.2s ease-in-out;
+    background-color: #fff;
+    border-radius: 8px !important;
+    padding: 0.8rem 0.5rem;
+  }
+  
+  .sortable-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  }
+  
+  .drag-handle {
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: grab;
+  }
+  
+  .drag-handle:hover {
+    background-color: #e9ecef;
+  }
+  
+  .drag-handle:active {
+    cursor: grabbing;
+    background-color: #dee2e6;
+  }
+  
+  .list-group-item {
+    margin-bottom: 0.5rem;
+    border-radius: 8px !important;
+  }
+
+  .order-sentences-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .order-sentences-container .list-group {
+    margin-top: 1rem;
+  }
+</style>

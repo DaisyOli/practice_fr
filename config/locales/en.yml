@@ -1,0 +1,228 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+  hello: "Hello"
+  app_name: "Practice PT"
+  welcome: "Welcome to Practice PT"
+  
+  # Common - Buttons and common text
+  common:
+    save: "Save"
+    edit: "Edit"
+    delete: "Delete"
+    back: "Back"
+    cancel: "Cancel"
+    confirm: "Confirm"
+    actions: "Actions"
+  
+  # Home page
+  home:
+    welcome_message: "Welcome to the Practice PT!"
+    login_prompt: "Please sign up or log in to continue."
+    logged_in_as: "You are logged in as"
+    go_to_teacher_dashboard: "Go to Teacher Dashboard"
+    go_to_student_dashboard: "Go to Student Dashboard"
+    sign_up_title: "Sign Up"
+
+  # Teacher Dashboard
+  teacher_dashboard:
+    welcome: "Welcome, Teacher!"
+    control_panel: "This is your control panel."
+    add_activity: "Add New Activity"
+    your_activities: "Your Activities"
+    no_activities: "You don't have any activities yet. Start by creating one using the button above!"
+
+  # Student Dashboard
+  student_dashboard:
+    welcome: "Welcome, Student!"
+    control_panel: "This is your control panel."
+    available_activities: "Available Activities"
+    no_activities: "There are no activities available at the moment."
+
+  navigation:
+    home: "Home"
+    dashboard: "Dashboard"
+    activities: "Activities"
+    profile: "Profile"
+    sign_out: "Sign out"
+    language: "Language"
+    
+  activities:
+    title: "Activities"
+    new: "New Activity"
+    edit: "Edit Activity"
+    level: "Level"
+    description: "Description"
+    questions: "Questions"
+    total_questions: "Total Questions"
+    actions: "Actions"
+    title_placeholder: "Enter activity title"
+    description_placeholder: "Describe the objective of this activity"
+    select_level: "Select level"
+    title_required: "Title is required"
+    description_required: "Description is required"
+    level_required: "Level is required"
+    no_questions: "No questions have been added to this activity yet."
+    add_question: "Add New Question"
+    view: "View"
+    edit_btn: "Edit"
+    edit_description_btn: "Edit activity description"
+    delete: "Delete"
+    delete_activity_btn: "Delete activity"
+    confirm_delete: "Are you sure you want to delete this activity?"
+    solve_quiz: "Solve"
+    back_to_dashboard: "Back to Dashboard"
+    back_to_activities: "Back to Activities"
+    go_to_activities: "Go to Activities"
+    question_count: "questions"
+    level_count:
+      zero: "No activities available"
+      one: "1 activity available"
+      other: "%{count} activities available"
+    view_level: "View Level"
+    back_to_all: "Back to all levels"
+    level_activities: "Activities"
+    no_activities_for_level: "There are no activities available for level %{level}."
+    add_statement: "Add Statement"
+    statement_label: "Statement Label"
+    statement_placeholder: "Enter the activity statement or a question for the student to answer in their notebook"
+    save_statement: "Save Statement"
+    add_media: "Add image or video"
+    media_url_label: "Image or video URL"
+    media_url_placeholder: "Paste the YouTube link or image URL"
+    media_url_help: "Paste the complete YouTube link or image URL."
+    save_media: "Save Media"
+    add_text: "Add text"
+    explanation_text_label: "Explanatory text"
+    explanation_text_placeholder: "Add explanatory text for this activity"
+    save_text: "Save text"
+    confirm_delete_statement: "Are you sure you want to delete the statement?"
+    confirm_delete_media: "Are you sure you want to delete the media?"
+    confirm_delete_explanation: "Are you sure you want to delete the explanatory text?"
+    add_content: "Add content"
+    main_actions: "Main actions"
+    other_actions: "Other actions"
+    
+  questions:
+    title: "Question"
+    content: "Question Content"
+    content_placeholder: "Enter the question"
+    content_required: "Question content is required"
+    options: "Options (comma separated)"
+    type: "Question type"
+    types:
+      multiple_choice: "Multiple choice"
+      fill_in_blank: "Fill in the blank"
+      order_sentences: "Order sentences"
+    fill_in_blank_help: "Use _____ (5 underscores) to mark where the student should enter the answer."
+    order_sentences_help: "Enter each sentence on a new line. The order you type will be considered the correct order."
+    form:
+      question_type: "Question Type"
+      question_content: "Question Content"
+      question_content_placeholder: "Enter the question content"
+      fill_in_blank_placeholder: "Ex: I _____ chocolate (Use exactly 5 underscores to create the blank)"
+      multiple_choice_placeholder: "Enter a multiple choice question"
+      content_placeholder: "Enter the question content"
+      options: "Options (comma separated)"
+      options_help: "Enter options separated by comma"
+      options_placeholder: "Ex: Brasilia, Rio de Janeiro, Sao Paulo, Salvador"
+      correct_answer: "Correct Answer"
+      correct_answer_placeholder: "Enter the correct answer (must match one of the options)"
+      sentences: "Sentences (one per line)"
+      points: "Points"
+      fill_in_blank_help_html: "<strong>Tip:</strong> Use exactly 5 underscores (_____) to mark blanks to be filled. Ex: 'I _____ chocolate' (the blank will be replaced with a text field)."
+      order_sentences_help_html: "<strong>Tip:</strong> Write sentences in correct order, one per line. The system will shuffle them for students."
+      order_sentences_input_help: "Enter each sentence on a separate line. The order you type will be considered the correct order."
+    options_required: "At least two options are required"
+    add: "Add Question"
+    
+  quiz:
+    title: "Solve Quiz:"
+    submit: "Submit Answers"
+    submitting: "Submitting..."
+    results: "Quiz Results"
+    final_score: "Final Score"
+    correct_answers: "You got %{correct} out of %{total} questions (%{score}%)"
+    your_answer: "Your answer"
+    correct_answer: "Correct answer"
+    try_again: "Try Again"
+    not_answered: "Not answered"
+    xp_earned: "Experience earned"
+    completed_recently: "Completed recently"
+    first_success: "First successful attempt!"
+    attempt_history: "Attempt history"
+    attempt_number: "Attempt"
+    date: "Date"
+    score: "Score"
+    xp: "XP"
+    view_results: "View results"
+    
+  forms:
+    save: "Save"
+    cancel: "Cancel"
+    edit: "Edit"
+    delete: "Delete"
+    confirm: "Are you sure?"
+    title: "Title"
+    description: "Description"
+    level: "Level"
+    create_activity: "Create Activity"
+    update_activity: "Update Activity"
+    
+  messages:
+    activity_created: "Activity was successfully created."
+    activity_updated: "Activity was successfully updated."
+    activity_deleted: "Activity was successfully deleted."
+    quiz_submitted: "Quiz was successfully submitted."
+    language_updated: "Language was successfully updated!"
+    language_update_failed: "Could not update language."
+    answer_quiz_first: "Please answer the quiz first."
+    
+  devise:
+    sessions:
+      new:
+        sign_in: "Sign in"
+        email: "Email"
+        password: "Password"
+        remember_me: "Remember me"
+    registrations:
+      new:
+        sign_up: "Sign up"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        minimum_password: "(%{min} characters minimum)"
+    mailer:
+      confirmation_instructions:
+        subject: "Confirmation instructions"
+        welcome: "Welcome %{email}!"
+        confirm_text: "You can confirm your account through the link below:"
+        confirm_link: "Confirm my account"
+        ignore_text: "If you didn't request an account, you can ignore this email."
