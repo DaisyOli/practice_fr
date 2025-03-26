@@ -90,7 +90,7 @@ Rails.application.configure do
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
     ENV["DOMAIN_NAME"], # Domínio principal
-    "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" # Subdomínio do Heroku
+    "practice-francais.herokuapp.com" # Subdomínio do Heroku (atualizado para o novo app)
   ]
   
   # Skip DNS rebinding protection for the default health check endpoint.
