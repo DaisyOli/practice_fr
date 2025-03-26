@@ -43,7 +43,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>PracticePT</h1>
+    <h1>PracticeFR</h1>
   </div>
   
   <div class="content">
@@ -52,7 +52,7 @@
     <p><%= t("devise.mailer.invitation_instructions.someone_invited_you") %></p>
     
     <p style="text-align: center;">
-      <a href="<%= accept_invitation_url(@resource, invitation_token: @token, host: @resource.invitation_sent_at ? 'practicept.site' : 'localhost:3000') %>" class="button">
+      <a href="<%= accept_invitation_url(@resource, invitation_token: @token, host: @resource.invitation_sent_at ? 'practicefr.com' : 'localhost:3000') %>" class="button">
         <%= t("devise.mailer.invitation_instructions.accept") %>
       </a>
     </p>
@@ -65,7 +65,7 @@
   </div>
   
   <div class="footer">
-    <p>© 2024 PracticePT. Todos os direitos reservados.</p>
+    <p>© 2024 PracticeFR. Todos os direitos reservados.</p>
     <p>Este é um email automático, por favor não responda.</p>
   </div>
 </body>
