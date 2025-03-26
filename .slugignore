@@ -1,0 +1,12 @@
+# Arquivos e diretórios que não são necessários no build do Heroku
+/test
+/spec
+/doc
+/tmp
+/log
+/.git
+README.md
+/node_modules
+.DS_Store
+/.github
+/coverage 

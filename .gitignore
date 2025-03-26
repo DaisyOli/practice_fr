@@ -34,3 +34,17 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 node_modules/
+
+# Arquivos específicos do ambiente de desenvolvimento
+.env
+.env.development
+.env.local
+
+# Arquivos específicos do Heroku
+.env.production
+/latest.dump
+
+# Outros arquivos temporários
+*.swp
+*~
+.DS_Store

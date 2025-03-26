@@ -9,22 +9,22 @@
         <% resource.class.invite_key_fields.each do |field| -%>
           <div class="mb-3">
             <%= f.label field, class: "form-label" %><br />
-            <%= f.text_field field, class: "form-control", placeholder: "Entrez #{field}" %>
+            <%= f.text_field field, class: "form-control", placeholder: "Enter #{field}" %>
           </div>
         <% end -%>
 
         <div class="mb-3">
           <%= f.label :role, class: "form-label" %>
-          <%= f.select :role, [['Professeur', 'teacher'], ['Étudiant', 'student']], { include_blank: true }, { class: "form-select" } %>
+          <%= f.select :role, [['Professor', 'teacher'], ['Estudante', 'student']], { include_blank: true }, { class: "form-select" } %>
         </div>
 
         <div class="d-grid">
-          <%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-primary btn-block", style: "background-color: #1a4b8c; border-color: #1a4b8c;" %>
+          <%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-primary btn-block" %>
         </div>
       <% end %>
 
       <div class="mt-3 text-center">
-        <%= link_to t('common.back'), :back, class: "text-decoration-none", style: "color: #1a4b8c;" %>
+        <%= link_to t('common.back'), :back, class: "text-decoration-none" %>
       </div>
     </div>
   </div>

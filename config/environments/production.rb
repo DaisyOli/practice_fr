@@ -88,12 +88,13 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
+  config.hosts = [
+    ENV["DOMAIN_NAME"], # Domínio principal
+    "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" # Subdomínio do Heroku
+  ]
+  
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   # Configuração do Gmail para envio de emails em produção
   config.action_mailer.delivery_method = :smtp
@@ -101,7 +102,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    domain: 'gmail.com',
+    domain: ENV["DOMAIN_NAME"],
     user_name: ENV['GMAIL_USERNAME'],
     password: ENV['GMAIL_PASSWORD'],
     authentication: :plain,
@@ -112,11 +113,13 @@ Rails.application.configure do
   config.action_mailer.default_options = {
     from: ENV['GMAIL_USERNAME'],
     reply_to: ENV['GMAIL_USERNAME'],
-    'X-MC-AutoText' => 'true',
-    'X-Priority' => '3',
-    'X-Mailer' => 'Practice FR Mailer'
+    'X-Priority' => '1',
+    'X-MSMail-Priority' => 'High',
+    'X-Mailer' => 'Practice FR Educational Platform',
+    'X-Auto-Response-Suppress' => 'OOF, DR, RN, NRN, AutoReply',
+    'Precedence' => 'Bulk'
   }
   
   # Host para os links nos emails
-  config.action_mailer.default_url_options = { host: ENV['APP_HOST'] || 'localhost:3000', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: ENV["DOMAIN_NAME"], protocol: 'https' }
 end

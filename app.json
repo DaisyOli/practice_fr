@@ -1,0 +1,45 @@
+{
+  "name": "Practice FR",
+  "description": "Uma aplicação para prática de francês",
+  "keywords": [
+    "ruby",
+    "rails",
+    "french",
+    "learning"
+  ],
+  "website": "https://practicefr.com/",
+  "repository": "https://github.com/seu-usuario/practice_fr",
+  "logo": "https://practicefr.com/logo.png",
+  "success_url": "/",
+  "scripts": {
+    "postdeploy": "bundle exec rails db:migrate"
+  },
+  "env": {
+    "RAILS_ENV": {
+      "value": "production"
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "value": "true"
+    },
+    "RAILS_LOG_TO_STDOUT": {
+      "value": "true"
+    },
+    "SECRET_KEY_BASE": {
+      "generator": "secret"
+    }
+  },
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  }
+} 

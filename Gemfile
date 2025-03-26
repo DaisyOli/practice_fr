@@ -60,6 +60,8 @@ gem 'ostruct'
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
+  
+  # Suporte a variáveis de ambiente no desenvolvimento
   gem "dotenv-rails"
 end
 
@@ -84,6 +86,9 @@ end
 
 # Gems para o Heroku
 group :production do
-  # Dependência recomendada pelo Heroku
-  gem 'rails_12factor'
+  # Gerenciamento de timeout para requisições no Heroku
+  gem 'rack-timeout'
+  
+  # Usado para compressão de assets
+  gem 'terser'
 end
