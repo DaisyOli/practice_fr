@@ -74,6 +74,9 @@ heroku config:set GMAIL_PASSWORD=your-app-password
 heroku config:set DOMAIN_NAME=your-domain.com
 ```
 
+## Deploy Status
+Updated for Heroku deployment on: <%= Date.today %>
+
 ## License
 
 [MIT](LICENSE)
