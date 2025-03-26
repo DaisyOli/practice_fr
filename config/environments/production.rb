@@ -69,7 +69,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
-  config.active_job.queue_name_prefix = "practice_pt_production"
+  config.active_job.queue_name_prefix = "practice_fr_production"
 
   config.action_mailer.perform_caching = false
 
@@ -101,12 +101,11 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    domain: 'practicept.site',
+    domain: 'gmail.com',
     user_name: ENV['GMAIL_USERNAME'],
     password: ENV['GMAIL_PASSWORD'],
     authentication: :plain,
-    enable_starttls_auto: true,
-    openssl_verify_mode: 'none'
+    enable_starttls_auto: true
   }
   
   # Adiciona cabeçalhos para evitar spam
@@ -115,9 +114,9 @@ Rails.application.configure do
     reply_to: ENV['GMAIL_USERNAME'],
     'X-MC-AutoText' => 'true',
     'X-Priority' => '3',
-    'X-Mailer' => 'PracticePT Mailer'
+    'X-Mailer' => 'Practice FR Mailer'
   }
   
   # Host para os links nos emails
-  config.action_mailer.default_url_options = { host: 'practicept.site', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: ENV['APP_HOST'] || 'localhost:3000', protocol: 'https' }
 end

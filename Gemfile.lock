@@ -120,6 +120,10 @@ GEM
     devise_invitable (2.0.9)
       actionmailer (>= 5.0)
       devise (>= 4.6)
+    dotenv (3.1.7)
+    dotenv-rails (3.1.7)
+      dotenv (= 3.1.7)
+      railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.0)
     execjs (2.10.0)
@@ -341,6 +345,7 @@ DEPENDENCIES
   debug
   devise
   devise_invitable
+  dotenv-rails
   http_accept_language
   importmap-rails
   jbuilder
