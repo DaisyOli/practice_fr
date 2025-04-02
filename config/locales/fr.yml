@@ -35,6 +35,7 @@ fr:
     profile: "Profil"
     sign_out: "Déconnexion"
     language: "Langue"
+    logout: "Déconnexion"
     
   # Activities
   activities:
@@ -234,6 +235,13 @@ fr:
         teacher: "Professeur"
         student: "Étudiant"
 
+  # Footer
+  footer:
+    made_with_love: "Fait avec amour pour les apprenants du français"
+    celebrating_francophonie: "Célébrant la francophonie mondiale"
+    copyright: "Tous droits réservés"
+    
   # Auth
   auth:
-    sign_out: "Déconnexion" 
+    sign_out: "Déconnexion"
+    tagline: "Votre plateforme pour apprendre et enseigner le français" 

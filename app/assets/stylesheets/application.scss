@@ -13,3 +13,258 @@
  *= require_tree .
  *= require_self
  */
+
+/* Tema Francês - Cores da bandeira: Azul (#002395), Branco (#FFFFFF), Vermelho (#ED2939) */
+
+body {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #f8f9fa;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #002395 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #ED2939 66.6%);
+  z-index: 1000;
+}
+
+.navbar {
+  background-color: #002395 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+  color: #FFFFFF !important;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #f8f9fa !important;
+}
+
+.container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: none;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #002395, #1a56db);
+  color: white;
+  font-weight: 600;
+  border-bottom: none;
+}
+
+.btn-primary {
+  background-color: #002395;
+  border-color: #002395;
+}
+
+.btn-primary:hover {
+  background-color: #001970;
+  border-color: #001970;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-danger {
+  background-color: #ED2939;
+  border-color: #ED2939;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.table th {
+  background-color: #f1f5f9;
+}
+
+.bg-info, .badge-info {
+  background-color: #002395 !important;
+}
+
+.welcome-header {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 30px;
+  border-left: 5px solid #002395;
+  border-right: 5px solid #ED2939;
+}
+
+.welcome-header h1 {
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.welcome-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+footer {
+  background-color: #343a40;
+  color: white;
+  padding: 20px 0;
+  margin-top: 50px;
+}
+
+/* Estilo para níveis de francês */
+.level-badge {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 15px;
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+}
+
+.level-a1 { background-color: #d1e7dd; color: #0f5132; }
+.level-a2 { background-color: #cfe2ff; color: #084298; }
+.level-b1 { background-color: #2dba4e; color: white; }
+.level-b2 { background-color: #0d6efd; color: white; }
+.level-c1 { background-color: #6f42c1; color: white; }
+.level-c2 { background-color: #212529; color: white; }
+
+/* Botões de ação estilizados */
+.action-buttons .btn {
+  margin-right: 5px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-view {
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+  color: white;
+}
+
+.btn-view:hover {
+  background-color: #0bacbe;
+  border-color: #0bacbe;
+  color: white;
+}
+
+.btn-edit {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+.btn-edit:hover {
+  background-color: #e0a800;
+  border-color: #e0a800;
+  color: #212529;
+}
+
+/* Formulários com estilo francês */
+.form-control:focus {
+  border-color: #002395;
+  box-shadow: 0 0 0 0.25rem rgba(0, 35, 149, 0.25);
+}
+
+.form-label {
+  font-weight: 500;
+  color: #343a40;
+}
+
+.form-text {
+  color: #6c757d;
+}
+
+/* Decoração com elementos franceses */
+.french-decoration {
+  position: relative;
+}
+
+.french-decoration::after {
+  content: "🇫🇷";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+/* Estilo para a página de login e registro */
+.auth-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #002395 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #ED2939 66.6%);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.auth-header h2 {
+  color: #002395;
+  font-weight: 700;
+}
+
+.auth-submit {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #002395;
+  border-color: #002395;
+}
+
+.auth-submit:hover {
+  background-color: #001970;
+  border-color: #001970;
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.auth-links a {
+  color: #002395;
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}

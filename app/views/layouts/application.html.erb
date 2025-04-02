@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts - Fonte elegante para francofonia -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap">
     
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -22,10 +24,12 @@
   
   <body>
     <% if current_user %>
-      <!-- Barra de navegação fixa no topo -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <!-- Barra de navegação fixa no topo com cores francesas -->
+      <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#"><%= t('app_name') %></a>
+          <a class="navbar-brand" href="<%= teacher_dashboard_path %>">
+            <i class="fas fa-graduation-cap me-2"></i><%= t('app_name') %>
+          </a>
           
           <!-- Botão de toggle para mobile -->
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -36,7 +40,14 @@
           <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <%= link_to t('navigation.logout'), destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
+                <span class="nav-link">
+                  <i class="fas fa-user me-1"></i> <%= current_user.email %>
+                </span>
+              </li>
+              <li class="nav-item">
+                <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" do %>
+                  <i class="fas fa-sign-out-alt me-1"></i> <%= t('navigation.logout') %>
+                <% end %>
               </li>
             </ul>
           </div>
@@ -55,6 +66,26 @@
         </div>
         
         <%= yield %>
+
+        <!-- Rodapé celebrando a francofonia -->
+        <footer class="mt-5">
+          <div class="container text-center">
+            <p>
+              <small>
+                <%= t('app_name') %> &copy; <%= Date.today.year %> - 
+                <span class="text-white-50">
+                  <i class="fas fa-heart text-danger"></i> 
+                  <%= t('footer.made_with_love') %>
+                </span>
+              </small>
+            </p>
+            <p class="mb-0">
+              <small>
+                <i class="fas fa-globe-americas"></i> <%= t('footer.celebrating_francophonie') %>
+              </small>
+            </p>
+          </div>
+        </footer>
       </div>
     <% else %>
       <div class="container mt-3">
@@ -66,7 +97,14 @@
         <% end %>
       </div>
       
-      <%= yield %>
+      <!-- Página de autenticação com design francês -->
+      <div class="auth-container">
+        <div class="auth-header">
+          <h2 class="french-decoration"><%= t('app_name') %></h2>
+          <p class="text-muted"><%= t('auth.tagline') %></p>
+        </div>
+        <%= yield %>
+      </div>
     <% end %>
     
     <script>
