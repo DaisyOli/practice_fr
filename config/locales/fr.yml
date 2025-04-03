@@ -234,6 +234,10 @@ fr:
         minimum_password: "(%{min} caractères minimum)"
         teacher: "Professeur"
         student: "Étudiant"
+    failure:
+      unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+      user:
+        unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
 
   # Footer
   footer:
@@ -244,4 +248,4 @@ fr:
   # Auth
   auth:
     sign_out: "Déconnexion"
-    tagline: "Votre plateforme pour apprendre et enseigner le français" 
+    tagline: "Votre plateforme pour pratiquer le français" 
