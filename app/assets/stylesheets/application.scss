@@ -268,3 +268,46 @@ footer {
 .auth-links a:hover {
   text-decoration: underline;
 }
+
+/* Estilo para os elementos do formulário de questões de ordenar elementos */
+.elements-container {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f8f9fa;
+}
+
+.elements-list {
+  margin-bottom: 10px;
+}
+
+.element-item {
+  transition: all 0.2s ease;
+}
+
+.element-item:hover {
+  transform: translateY(-2px);
+}
+
+.element-input {
+  font-size: 1rem;
+}
+
+.add-element {
+  transition: all 0.2s ease;
+}
+
+.add-element:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.remove-element {
+  transition: all 0.2s ease;
+}
+
+.remove-element:hover {
+  background-color: #dc3545;
+  color: white;
+}

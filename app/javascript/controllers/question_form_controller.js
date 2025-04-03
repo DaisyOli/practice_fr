@@ -9,6 +9,8 @@ export default class extends Controller {
     "fillInBlankHelp",
     "orderSentencesHelp",
     "orderSentencesFields",
+    "orderElementsHelp",
+    "orderElementsFields",
     "correctAnswerField"
   ];
 
@@ -18,73 +20,45 @@ export default class extends Controller {
   }
 
   toggleFields() {
-    console.log("toggleFields chamado");
     this.updateFields();
   }
 
   updateFields() {
-    if (!this.hasQuestionTypeTarget) {
-      console.log("Alvo questionType não encontrado");
-      return;
-    }
-
-    const type = this.questionTypeTarget.value;
-    console.log("Atualizando campos para tipo:", type);
+    if (!this.hasQuestionTypeTarget) return;
     
-    // Esconder todos os campos específicos
-    this.hideAllFields();
+    const questionType = this.questionTypeTarget.value;
+    console.log("Tipo de questão selecionado:", questionType);
     
-    // Mostrar campos baseados no tipo selecionado
-    switch (type) {
-      case 'multiple_choice':
-        if (this.hasMultipleChoiceFieldsTarget) {
-          console.log("Mostrando campos de múltipla escolha");
-          this.multipleChoiceFieldsTarget.style.display = 'block';
-        }
-        if (this.hasCorrectAnswerFieldTarget) {
-          this.correctAnswerFieldTarget.style.display = 'block';
-        }
-        break;
-        
-      case 'fill_in_blank':
-        if (this.hasFillInBlankHelpTarget) {
-          console.log("Mostrando ajuda para lacunas");
-          this.fillInBlankHelpTarget.style.display = 'block';
-        }
-        if (this.hasCorrectAnswerFieldTarget) {
-          this.correctAnswerFieldTarget.style.display = 'block';
-        }
-        break;
-        
-      case 'order_sentences':
-        if (this.hasOrderSentencesHelpTarget) {
-          console.log("Mostrando ajuda para ordenar frases");
-          this.orderSentencesHelpTarget.style.display = 'block';
-        }
-        if (this.hasOrderSentencesFieldsTarget) {
-          console.log("Mostrando campos para ordenar frases");
-          this.orderSentencesFieldsTarget.style.display = 'block';
-        }
-        if (this.hasCorrectAnswerFieldTarget) {
-          console.log("Escondendo campo de resposta correta para ordenar frases");
-          this.correctAnswerFieldTarget.style.display = 'none';
-        }
-        break;
-    }
-
-    // Atualizar placeholders e ajuda contextual
-    this.updatePlaceholders(type);
-  }
-  
-  hideAllFields() {
-    console.log("Escondendo todos os campos específicos");
+    // Esconde todos os campos específicos
     if (this.hasMultipleChoiceFieldsTarget) this.multipleChoiceFieldsTarget.style.display = 'none';
     if (this.hasFillInBlankHelpTarget) this.fillInBlankHelpTarget.style.display = 'none';
     if (this.hasOrderSentencesHelpTarget) this.orderSentencesHelpTarget.style.display = 'none';
     if (this.hasOrderSentencesFieldsTarget) this.orderSentencesFieldsTarget.style.display = 'none';
+    if (this.hasOrderElementsHelpTarget) this.orderElementsHelpTarget.style.display = 'none';
+    if (this.hasOrderElementsFieldsTarget) this.orderElementsFieldsTarget.style.display = 'none';
     
-    // Mostrar campo de resposta correta por padrão
+    // Mostra o campo de resposta correta por padrão
     if (this.hasCorrectAnswerFieldTarget) this.correctAnswerFieldTarget.style.display = 'block';
+    
+    // Mostra campos específicos baseado no tipo
+    switch (questionType) {
+      case 'multiple_choice':
+        if (this.hasMultipleChoiceFieldsTarget) this.multipleChoiceFieldsTarget.style.display = 'block';
+        break;
+      case 'fill_in_blank':
+        if (this.hasFillInBlankHelpTarget) this.fillInBlankHelpTarget.style.display = 'block';
+        break;
+      case 'order_sentences':
+        if (this.hasOrderSentencesHelpTarget) this.orderSentencesHelpTarget.style.display = 'block';
+        if (this.hasOrderSentencesFieldsTarget) this.orderSentencesFieldsTarget.style.display = 'block';
+        if (this.hasCorrectAnswerFieldTarget) this.correctAnswerFieldTarget.style.display = 'none';
+        break;
+      case 'order_elements':
+        if (this.hasOrderElementsHelpTarget) this.orderElementsHelpTarget.style.display = 'block';
+        if (this.hasOrderElementsFieldsTarget) this.orderElementsFieldsTarget.style.display = 'block';
+        if (this.hasCorrectAnswerFieldTarget) this.correctAnswerFieldTarget.style.display = 'none';
+        break;
+    }
   }
 
   updatePlaceholders(type) {
@@ -99,6 +73,9 @@ export default class extends Controller {
         contentField.placeholder = 'Saisissez une question à choix multiple';
         break;
       case 'order_sentences':
+        contentField.placeholder = 'Saisissez l\'énoncé de la question';
+        break;
+      case 'order_elements':
         contentField.placeholder = 'Saisissez l\'énoncé de la question';
         break;
       default:

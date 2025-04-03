@@ -53,6 +53,43 @@ class ActivitiesController < ApplicationController
       when 'order_sentences'
         # Para questões de ordenação, compara a ordem dada com a ordem correta
         is_correct = given_answer.present? && given_answer.to_s == correct_answer.to_s
+      when 'order_elements'
+        # Para questões de ordenar elementos, comparamos cada frase com sua versão original
+        if given_answer.present?
+          # Obter as frases originais (corretas)
+          original_phrases = correct_answer.split("|")
+          
+          # Obter as frases respondidas (elas estarão com as palavras na ordem que o usuário definiu)
+          given_phrases = given_answer.split("|")
+          
+          # Verificar se todas as frases estão corretas
+          # Uma frase está correta se as palavras estiverem na mesma ordem da frase original
+          # Para isso, comparamos removendo espaços extras
+          all_correct = true
+          
+          # Comparar cada frase
+          original_phrases.each_with_index do |original, i|
+            if i < given_phrases.length
+              # Normaliza as frases removendo espaços extras
+              normalized_original = original.strip.gsub(/\s+/, ' ')
+              normalized_given = given_phrases[i].strip.gsub(/\s+/, ' ')
+              
+              # Se qualquer frase estiver incorreta, a resposta completa está incorreta
+              if normalized_original != normalized_given
+                all_correct = false
+                break
+              end
+            else
+              # Se não houver resposta para alguma frase, a resposta está incorreta
+              all_correct = false
+              break
+            end
+          end
+          
+          is_correct = all_correct
+        else
+          is_correct = false
+        end
       end
       
       total_correct += 1 if is_correct

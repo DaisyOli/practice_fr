@@ -20,7 +20,8 @@
             <div class="mb-2">
               <strong><%= t('quiz.your_answer') %>:</strong>
               <span class="<%= result["is_correct"] ? 'text-success' : 'text-danger' %>">
-                <% if result["question_type"] == "order_sentences" %>
+                <% case result["question_type"] %>
+                <% when "order_sentences" %>
                   <% if result["given_answer"] == t('quiz.not_answered') %>
                     <%= result["given_answer"] %>
                   <% else %>
@@ -30,6 +31,12 @@
                       <% end %>
                     </ol>
                   <% end %>
+                <% when 'order_elements' %>
+                  <div class="d-flex flex-wrap gap-2 mb-3 p-3 bg-light rounded">
+                    <% result['given_answer'].split('|').each do |element| %>
+                      <span class="badge bg-secondary p-2"><%= element %></span>
+                    <% end %>
+                  </div>
                 <% else %>
                   <%= result["given_answer"] == "Não respondida" ? t('quiz.not_answered') : result["given_answer"] %>
                 <% end %>
@@ -39,12 +46,19 @@
             <% unless result["is_correct"] %>
               <div class="mt-2">
                 <strong><%= t('quiz.correct_answer') %>:</strong>
-                <% if result["question_type"] == "order_sentences" %>
+                <% case result["question_type"] %>
+                <% when "order_sentences" %>
                   <ol class="mt-2 text-success">
                     <% result["correct_answer"].split("|").each do |sentence| %>
                       <li class="mb-1"><%= sentence %></li>
                     <% end %>
                   </ol>
+                <% when 'order_elements' %>
+                  <div class="d-flex flex-wrap gap-2 p-3 bg-light rounded">
+                    <% result['correct_answer'].split('|').each do |element| %>
+                      <span class="badge bg-success p-2"><%= element %></span>
+                    <% end %>
+                  </div>
                 <% else %>
                   <span class="text-success"><%= result["correct_answer"] %></span>
                 <% end %>

@@ -62,6 +62,16 @@
     </div>
   </div>
   
+  <div class="row mb-3 order-elements-help" id="order_elements_help" 
+       data-question-form-target="orderElementsHelp" 
+       style="display: <%= question.order_elements? ? 'block' : 'none' %>;">
+    <div class="col-md-12">
+      <div class="alert alert-info">
+        <%= t('questions.form.order_elements_help_html') %>
+      </div>
+    </div>
+  </div>
+  
   <div class="row mb-3 multiple-choice-fields" id="multiple_choice_fields" 
        data-question-form-target="multipleChoiceFields" 
        style="display: <%= question.multiple_choice? ? 'block' : 'none' %>;">
@@ -85,8 +95,47 @@
           class: "form-control", 
           rows: 5,
           placeholder: t('questions.form.sentences_placeholder'),
-          value: question.order_sentences? ? question.content : nil %>
+          value: question.order_sentences? ? question.correct_answer&.gsub("|", "\n") : nil %>
       <small class="form-text text-muted"><%= t('questions.form.order_sentences_input_help') %></small>
+    </div>
+  </div>
+
+  <div class="row mb-3 order-elements-fields" id="order_elements_fields" 
+       data-question-form-target="orderElementsFields" 
+       style="display: <%= question.order_elements? ? 'block' : 'none' %>;">
+    <div class="col-md-12">
+      <%= form.label :elements_content, t('questions.form.phrases_to_order') %>
+      <div class="phrases-container" id="phrases-container" data-controller="phrases-form">
+        <input type="hidden" id="elements_hidden_input" name="question[elements_content]" value="<%= question.order_elements? ? question.correct_answer&.gsub("|", "\n") : nil %>">
+        
+        <div class="phrases-list" id="phrases-list">
+          <!-- As frases serão adicionadas aqui dinamicamente -->
+          <% if question.order_elements? && question.correct_answer.present? %>
+            <% question.correct_answer.split("|").each do |phrase| %>
+              <div class="input-group mb-2 phrase-item">
+                <input type="text" class="form-control phrase-input" value="<%= phrase %>" placeholder="<%= t('questions.form.phrase_placeholder') %>">
+                <button type="button" class="btn btn-outline-danger remove-phrase">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="input-group mb-2 phrase-item">
+              <input type="text" class="form-control phrase-input" placeholder="<%= t('questions.form.phrase_placeholder') %>">
+              <button type="button" class="btn btn-outline-danger remove-phrase">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="d-flex justify-content-end mb-2">
+          <button type="button" class="btn btn-sm btn-outline-primary add-phrase" data-action="click->phrases-form#addPhrase">
+            <i class="fas fa-plus"></i> <%= t('questions.form.add_phrase') %>
+          </button>
+        </div>
+      </div>
+      <small class="form-text text-muted"><%= t('questions.form.order_elements_help') %></small>
     </div>
   </div>
   
@@ -127,6 +176,8 @@
       const fillInBlankHelp = document.getElementById('fill_in_blank_help');
       const orderSentencesHelp = document.getElementById('order_sentences_help');
       const orderSentencesFields = document.getElementById('order_sentences_fields');
+      const orderElementsHelp = document.getElementById('order_elements_help');
+      const orderElementsFields = document.getElementById('order_elements_fields');
       const correctAnswerField = document.getElementById('correct_answer_field');
       const contentTextarea = document.getElementById('content_textarea');
       
@@ -134,7 +185,8 @@
       const placeholders = {
         'multiple_choice': '<%= t('questions.form.multiple_choice_placeholder') %>',
         'fill_in_blank': '<%= t('questions.form.fill_in_blank_placeholder') %>',
-        'order_sentences': '<%= t('questions.form.content_placeholder') %>'
+        'order_sentences': '<%= t('questions.form.content_placeholder') %>',
+        'order_elements': '<%= t('questions.form.content_placeholder') %>'
       };
       
       function updateFormFields() {
@@ -146,6 +198,8 @@
         if (fillInBlankHelp) fillInBlankHelp.style.display = 'none';
         if (orderSentencesHelp) orderSentencesHelp.style.display = 'none';
         if (orderSentencesFields) orderSentencesFields.style.display = 'none';
+        if (orderElementsHelp) orderElementsHelp.style.display = 'none';
+        if (orderElementsFields) orderElementsFields.style.display = 'none';
         
         // Mostrar campo de resposta correta por padrão
         if (correctAnswerField) correctAnswerField.style.display = 'block';
@@ -166,6 +220,11 @@
           case 'order_sentences':
             if (orderSentencesHelp) orderSentencesHelp.style.display = 'block';
             if (orderSentencesFields) orderSentencesFields.style.display = 'block';
+            if (correctAnswerField) correctAnswerField.style.display = 'none';
+            break;
+          case 'order_elements':
+            if (orderElementsHelp) orderElementsHelp.style.display = 'block';
+            if (orderElementsFields) orderElementsFields.style.display = 'block';
             if (correctAnswerField) correctAnswerField.style.display = 'none';
             break;
         }

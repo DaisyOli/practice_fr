@@ -95,6 +95,37 @@
                     <% end %>
                   </ul>
                 </div>
+              <% elsif question.order_elements? && question.options.is_a?(Array) && question.options.any? %>
+                <div class="order-elements-container">
+                  <p class="mb-3 text-muted"><i class="fas fa-info-circle me-2"></i><%= t('questions.order_elements_instruction', default: 'Glissez-déposez les éléments pour former une phrase correcte:') %></p>
+                  
+                  <%= hidden_field_tag "answers[#{question.id}]", '', class: 'order-elements-answer', id: "order_elements_answer_#{question.id}" %>
+                  
+                  <% question.options.each_with_index do |phrase_obj, phrase_index| %>
+                    <% if phrase_obj.is_a?(Hash) && phrase_obj["words"].is_a?(Array) && phrase_obj["words"].any? %>
+                      <div class="phrase-line" data-original="<%= phrase_obj["original"] %>">
+                        <div class="phrase-number"><%= phrase_index + 1 %>.</div>
+                        <div class="phrase-elements">
+                          <ul class="list-group list-group-horizontal sortable-list element-list" 
+                              id="sortable_<%= question.id %>_<%= phrase_index %>" 
+                              data-question-id="<%= question.id %>"
+                              data-phrase-index="<%= phrase_index %>">
+                            <% phrase_obj["words"].each_with_index do |word, word_index| %>
+                              <li class="list-group-item sortable-item element-item border-0 shadow-sm" data-value="<%= word %>">
+                                <div class="d-flex align-items-center">
+                                  <div class="drag-handle px-1 me-1">
+                                    <i class="fas fa-grip-vertical text-primary"></i>
+                                  </div>
+                                  <div><%= word %></div>
+                                </div>
+                              </li>
+                            <% end %>
+                          </ul>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
               <% end %>
             </div>
           </div>
@@ -127,16 +158,50 @@
         return;
       }
       
-      const answerField = document.getElementById(`order_sentences_answer_${questionId}`);
-      if (!answerField) {
-        console.error(`Campo de resposta não encontrado para a questão ${questionId}`);
-        return;
-      }
+      // Verificar se é uma questão de ordenar frases ou elementos
+      const isSentence = sortableList.id.indexOf('_sentence_') > -1;
+      const isElements = sortableList.closest('.order-elements-container') !== null;
       
-      const items = sortableList.querySelectorAll('.sortable-item');
-      const values = Array.from(items).map(item => item.dataset.value || '');
-      answerField.value = values.join('|');
-      console.log(`Valor atualizado para questão ${questionId}:`, answerField.value);
+      if (isElements) {
+        // Para questões de ordenar elementos, precisamos combinar todas as frases
+        const answerField = document.getElementById(`order_elements_answer_${questionId}`);
+        if (!answerField) {
+          console.error(`Campo de resposta não encontrado para a questão ${questionId}`);
+          return;
+        }
+        
+        // Obter todas as frases para esta questão
+        const phraseLines = document.querySelectorAll(`.order-elements-container [data-question-id="${questionId}"]`);
+        
+        // Obter a ordem atual de todas as frases
+        const phrasesResults = [];
+        
+        phraseLines.forEach(line => {
+          // Obter índice da frase
+          const phraseIndex = line.dataset.phraseIndex;
+          
+          // Obter a ordem atual das palavras
+          const items = line.querySelectorAll('.sortable-item');
+          const words = Array.from(items).map(item => item.dataset.value || '');
+          
+          // Adicionar ao resultado com o índice correto
+          phrasesResults[phraseIndex] = words.join(' ');
+        });
+        
+        // Atualizar o campo com todas as frases separadas por |
+        answerField.value = phrasesResults.join('|');
+      } else {
+        // Para questões de ordenar sentenças (comportamento original)
+        const answerField = document.getElementById(`order_sentences_answer_${questionId}`);
+        if (!answerField) {
+          console.error(`Campo de resposta não encontrado para a questão ${questionId}`);
+          return;
+        }
+        
+        const items = sortableList.querySelectorAll('.sortable-item');
+        const values = Array.from(items).map(item => item.dataset.value || '');
+        answerField.value = values.join('|');
+      }
     }
 
     // Destroi instâncias existentes do Sortable para evitar duplicações
@@ -245,5 +310,83 @@
 
   .order-sentences-container .list-group {
     margin-top: 1rem;
+  }
+
+  .order-elements-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .element-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+
+  .element-item {
+    background-color: white;
+    border-radius: 6px !important;
+    padding: 8px 12px;
+    margin: 4px;
+    font-size: 1.1rem;
+    cursor: grab;
+    transition: all 0.2s;
+  }
+
+  .element-item:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+  }
+
+  .phrase-line {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  .phrase-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 15px;
+    margin-top: 8px;
+    min-width: 30px;
+    color: #002395;
+  }
+
+  .phrase-elements {
+    flex-grow: 1;
+  }
+
+  .element-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background-color: transparent;
+    padding: 0;
+    justify-content: flex-start;
+  }
+
+  .element-item {
+    background-color: white;
+    border-radius: 6px !important;
+    padding: 8px 12px;
+    margin: 4px;
+    font-size: 1.1rem;
+    cursor: grab;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .element-item:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 </style>
